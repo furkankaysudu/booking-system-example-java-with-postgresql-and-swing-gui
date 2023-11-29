@@ -12,15 +12,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddVehicle extends JFrame {
 
-    private JComboBox<String> vehicleTypeComboBox;
-    private JTextField capacityField, driverSalaryField, employeeSalaryField, cityNameField;
-    private JTextArea cityNamesArea;
-    private List<String> cityList;
+    private JComboBox<String> vehicleTypeComboBox, dateComboBox;
+    private JTextField capacityField, driverSalaryField, employeeSalaryField;
     private int companyKey;
 
     public AddVehicle(int companyKey) {
@@ -44,19 +44,11 @@ public class AddVehicle extends JFrame {
         JLabel employeeSalaryLabel = new JLabel("Employee Salary:");
         employeeSalaryField = new JTextField();
 
-        JLabel cityNameLabel = new JLabel("City Name:");
-        cityNameField = new JTextField();
-        JButton addCityButton = new JButton("Add City");
-        addCityButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addCityName();
-            }
-        });
-
-        JLabel cityNamesLabel = new JLabel("City Names:");
-        cityNamesArea = new JTextArea();
-        cityNamesArea.setEditable(false);
+        JLabel dateLabel = new JLabel("Date:");
+        String[] allowedDates = {"2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07", "2023-12-08", "2023-12-09", "2023-12-10"};
+        dateComboBox = new JComboBox<>(allowedDates);
+        add(dateLabel);
+        add(dateComboBox);
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
@@ -65,8 +57,9 @@ public class AddVehicle extends JFrame {
                 // Perform actions when OK button is clicked
                 // For example, retrieve entered values and process them
                 String selectedVehicleType = (String) vehicleTypeComboBox.getSelectedItem();
-                String capacity = capacityField.getText();
-                int capasity = Integer.parseInt(capacity);
+
+                String capacityS = capacityField.getText();
+                int capacity = Integer.parseInt(capacityS);
                 String driverSalary = driverSalaryField.getText();
                 int dSalary = Integer.parseInt(driverSalary);
                 String employeeSalary = employeeSalaryField.getText();
@@ -88,12 +81,22 @@ public class AddVehicle extends JFrame {
                 }
                 // You can also retrieve city names from the cityList
                 try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
-                    PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capasity,driversalary,employeesalary, type, company_key) VALUES (?,?,?,?,?)");
-                    st.setInt(1,capasity);
+                    String selectedDateStr = (String) dateComboBox.getSelectedItem();
+
+                    // Convert String to LocalDate
+                    LocalDate lDate = LocalDate.parse(selectedDateStr);
+
+                    // Convert LocalDate to java.sql.Date
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(lDate);
+
+
+                    PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capacity,driversalary,employeesalary, type, company_key,date) VALUES (?,?,?,?,?,?)");
+                    st.setInt(1,capacity);
                     st.setInt(2,dSalary);
                     st.setInt(3,eSalary);
                     st.setString(4,vechicleType);
                     st.setInt(5,companyKey);
+                    st.setDate(6, sqlDate);
                     st.executeUpdate();
                     st.close();
 
@@ -112,36 +115,11 @@ public class AddVehicle extends JFrame {
         add(driverSalaryField);
         add(employeeSalaryLabel);
         add(employeeSalaryField);
-        add(cityNameLabel);
-        add(cityNameField);
-        add(addCityButton);
-        add(cityNamesLabel);
-        add(cityNamesArea);
+        add(dateLabel);
+        add(dateComboBox);
         add(okButton);
-
-        cityList = new ArrayList<>();
 
         setVisible(true);
     }
-
-    private void addCityName() {
-        String cityName = cityNameField.getText();
-        if (!cityName.isEmpty()) {
-            cityList.add(cityName);
-            cityNameField.setText("");
-            updateCityNamesArea();
-        } else {
-            JOptionPane.showMessageDialog(this, "Please enter a city name.");
-        }
-    }
-
-    private void updateCityNamesArea() {
-        StringBuilder builder = new StringBuilder();
-        for (String city : cityList) {
-            builder.append(city).append("\n");
-        }
-        cityNamesArea.setText(builder.toString());
-    }
-
 }
 
