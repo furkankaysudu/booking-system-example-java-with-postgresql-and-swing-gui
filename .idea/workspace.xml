@@ -5,30 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="241e1559-8ce2-4553-9f43-b3607ea02289" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/VehicleReservationGUI.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/VehicleReservationGUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/searchForm.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/searchForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/65143dac-688c-43fe-a22d-0fb4cae72d79.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/65143dac-688c-43fe-a22d-0fb4cae72d79.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/65143dac-688c-43fe-a22d-0fb4cae72d79/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/65143dac-688c-43fe-a22d-0fb4cae72d79/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/information_schema.FNRwLQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/pg_catalog.0S1ZNQ.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/ReservationSystem.-9hTVw/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/8ac38985-3d54-4a55-bb7b-2c28311bba9b/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c262a147-4250-4bba-a3bc-464ceeaf8f1f.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c262a147-4250-4bba-a3bc-464ceeaf8f1f/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c262a147-4250-4bba-a3bc-464ceeaf8f1f/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c262a147-4250-4bba-a3bc-464ceeaf8f1f/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ffb98115-2512-4a3a-832d-8bc8ce5503e3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/AddDestination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/AddDestination.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/AddVehicle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/AddVehicle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/CompanyPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/CompanyPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/LoginGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/LoginGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/VehicleReservationGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/VehicleReservationGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/searchForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/searchForm.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,9 +73,9 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Application.searchForm">
-    <configuration name="AdminGui" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.gui.AdminGui" />
+  <component name="RunManager" selected="Application.LoginGui">
+    <configuration name="AddDestination" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.gui.AddDestination" />
       <module name="untitled" />
       <extension name="coverage">
         <pattern>
@@ -162,11 +147,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LoginGui" />
+        <item itemvalue="Application.AddDestination" />
         <item itemvalue="Application.searchForm" />
         <item itemvalue="Application.VehicleReservationGUI" />
-        <item itemvalue="Application.LoginGui" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.AdminGui" />
       </list>
     </recent_temporary>
   </component>
@@ -179,7 +164,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699873803210</updated>
       <workItem from="1699873804347" duration="69128000" />
-      <workItem from="1700472243158" duration="42289000" />
+      <workItem from="1700472243158" duration="92252000" />
     </task>
     <servers />
   </component>

@@ -7,7 +7,7 @@ import java.sql.*;
 public class LoginGui extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton loginButton;
+    private JButton loginButton, searchButton;
 
     public LoginGui() {
         setTitle("Login Page");
@@ -18,9 +18,10 @@ public class LoginGui extends JFrame {
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
         loginButton = new JButton("Login");
-
+        searchButton = new JButton("Search Ticket");
+        JLabel buttonLabel = new JLabel();
         // Set layout manager
-        setLayout(new GridLayout(3, 2));
+        setLayout(new GridLayout(4, 2));
 
         // Add components to the frame
         add(new JLabel("Username:"));
@@ -29,9 +30,12 @@ public class LoginGui extends JFrame {
         add(passwordField);
         add(new JLabel(""));
         add(loginButton);
+        add(buttonLabel);
+        add(searchButton);
 
         // Add action listener to the login button
         loginButton.addActionListener(e -> authenticate());
+        searchButton.addActionListener(e -> openBookTicketPage());
 
         setVisible(true);
     }
@@ -85,6 +89,10 @@ public class LoginGui extends JFrame {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    private void openBookTicketPage(){
+        new searchForm().setVisible(true);
+        dispose();
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(LoginGui::new);

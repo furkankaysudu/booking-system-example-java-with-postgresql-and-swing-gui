@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 public class searchForm extends JFrame {
     private JLabel departureLabel, arrivalLabel, passengerLabel, dateLabel;
     private JTextField departureField, arrivalField, passengerField, dateField;
+    private JCheckBox oneWay;
     private JButton reserveButton;
 
     private final String[] cities = {"Istanbul", "Kocaeli", "Bilecik", "Ankara", "Eskişehir", "Konya"};
@@ -16,7 +17,7 @@ public class searchForm extends JFrame {
         setTitle("Ticket Reservation App");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(5, 2));
+        setLayout(new GridLayout(6, 2));
 
         departureLabel = new JLabel("Departure City:");
         departureField = new JTextField();
@@ -30,6 +31,8 @@ public class searchForm extends JFrame {
         dateLabel = new JLabel("Departure Date (YYYY-MM-DD):");
         dateField = new JTextField();
 
+        oneWay = new JCheckBox("ONE WAY");
+
         reserveButton = new JButton("Reserve Ticket");
         reserveButton.addActionListener(e -> reserveTicket());
 
@@ -42,6 +45,7 @@ public class searchForm extends JFrame {
         add(dateLabel);
         add(dateField);
         add(new JLabel()); // Empty label as a placeholder
+        add(oneWay);
         add(reserveButton);
 
         setVisible(true);
@@ -79,16 +83,13 @@ public class searchForm extends JFrame {
             JOptionPane.showMessageDialog(this, "Invalid date format!");
             return;
         }
-        SwingUtilities.invokeLater(() -> new VehicleReservationGUI(departure,arrival,numOfPassengers,departureDate));
 
-        // Perform ticket reservation or further actions based on inputs
-        // You can handle the reservation logic here
-        // For now, display a message with the input details
+        SwingUtilities.invokeLater(() -> new VehicleReservationGUI(departure,arrival,numOfPassengers,departureDate,isONeWay()));
+
         String message = "Departure City: " + departure + "\nArrival City: " + arrival + "\nPassengers: "
                 + numOfPassengers + "\nDeparture Date: " + departureDate;
         JOptionPane.showMessageDialog(this, "SEARCH RESULTS ACCORDİNG TO: \n" + message);
     }
-
     private boolean isValidCity(String cityName) {
         for (String city : cities) {
             if (city.equalsIgnoreCase(cityName)) {
@@ -97,8 +98,7 @@ public class searchForm extends JFrame {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(searchForm::new);
+    private boolean isONeWay(){
+        return oneWay.isSelected();
     }
 }

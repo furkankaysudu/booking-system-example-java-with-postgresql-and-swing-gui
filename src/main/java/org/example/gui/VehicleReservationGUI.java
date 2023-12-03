@@ -14,13 +14,15 @@ public class VehicleReservationGUI extends JFrame {
     private String cityName1, cityName2;
     private int passengerCount, capacity, vKey;
     private LocalDate departureDate;
+    private Boolean isOneWay;
     private ArrayList<Integer> vehicleKeys = new ArrayList<>();
 
-    public VehicleReservationGUI(String cityName1, String cityName2, int passangerCount, LocalDate departureDate) {
+    public VehicleReservationGUI(String cityName1, String cityName2, int passangerCount, LocalDate departureDate, Boolean isOneWay) {
         this.cityName1 = cityName1;
         this.cityName2 = cityName2;
         this.passengerCount = passangerCount;
         this.departureDate = departureDate;
+        this.isOneWay = isOneWay;
 
         setTitle("Vehicle Reservation");
         setSize(600, 400);
@@ -33,7 +35,7 @@ public class VehicleReservationGUI extends JFrame {
         add(scrollPane);
 
         fetchVehicleInformation();
-
+        setDefaultCloseOperation(VehicleReservationGUI.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
@@ -48,13 +50,15 @@ public class VehicleReservationGUI extends JFrame {
         java.sql.Date sqlDate = java.sql.Date.valueOf(departureDate);
         String qry = "SELECT r.vehicle_key FROM route r "
                 + "JOIN vehicles v ON r.vehicle_key = v.id "
-                + "WHERE r.destination = ? AND v.date = ?";
-        //TODO ADD A CONDİTİON OF DEPARTUREDATE
+                + "WHERE r.destination = ? AND v.date = ? "
+                + "ORDER BY CASE WHEN r.destination = ? THEN r.id END DESC";
+        //COMPLETED ADD A CONDİTİON OF DEPARTURE DATE
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
             PreparedStatement statement = connection.prepareStatement(qry);
             statement.setString(1, cityName2);
             statement.setDate(2,sqlDate);
+            statement.setString(3,cityName2);
             ResultSet rSet = statement.executeQuery();
 
             while (rSet.next()){
@@ -69,16 +73,17 @@ public class VehicleReservationGUI extends JFrame {
                 "FROM vehicles v\n" +
                 "JOIN route r ON v.id = r.vehicle_key\n" +
                 "JOIN companies c ON c.id = v.company_key\n" +
-                "WHERE r.destination = ? AND r.vehicle_key = ? \n" +
+                "WHERE r.destination = ? AND r.vehicle_key = ? AND r.is_one_way = ?\n" +
                 "ORDER BY CASE WHEN r.destination = ? THEN r.id END ASC;\n";
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, cityName1);
+            statement.setBoolean(3,isOneWay);
 
             for (Integer vehicleKey : vehicleKeys) {
                 statement.setInt(2, vehicleKey);
-                statement.setString(3, cityName1);
+                statement.setString(4, cityName1);
 
                 ResultSet resultSet = statement.executeQuery();
 

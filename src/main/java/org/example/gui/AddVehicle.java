@@ -19,8 +19,8 @@ import java.util.List;
 
 public class AddVehicle extends JFrame {
 
-    private JComboBox<String> vehicleTypeComboBox, dateComboBox;
-    private JTextField capacityField, driverSalaryField, employeeSalaryField;
+    private JComboBox<String> vehicleTypeComboBox, dateComboBox, fuelTypeComboBox;
+    private JTextField capacityField, driverSalaryField, employeeSalaryField, ticketPriceField, fuelPerKmField;
     private int companyKey;
 
     public AddVehicle(int companyKey) {
@@ -35,6 +35,10 @@ public class AddVehicle extends JFrame {
         String[] vehicleTypes = {"Bus", "Train", "Airplane"};
         vehicleTypeComboBox = new JComboBox<>(vehicleTypes);
 
+        JLabel fuelTypeLabel = new JLabel("Fuel Type");
+        String[] fuelTypes = {"Benzin", "Motorin", "Elektrik", "Gaz"};
+        fuelTypeComboBox = new JComboBox<>(fuelTypes);
+
         JLabel capacityLabel = new JLabel("Capacity:");
         capacityField = new JTextField();
 
@@ -43,6 +47,12 @@ public class AddVehicle extends JFrame {
 
         JLabel employeeSalaryLabel = new JLabel("Employee Salary:");
         employeeSalaryField = new JTextField();
+
+        JLabel ticketPriceLabel = new JLabel("Ticket Price:");
+        ticketPriceField = new JTextField();
+
+        JLabel fuelLabel = new JLabel("Fuel Cost Per KM");
+        fuelPerKmField = new JTextField();
 
         JLabel dateLabel = new JLabel("Date:");
         String[] allowedDates = {"2023-12-04", "2023-12-05", "2023-12-06", "2023-12-07", "2023-12-08", "2023-12-09", "2023-12-10"};
@@ -64,6 +74,10 @@ public class AddVehicle extends JFrame {
                 int dSalary = Integer.parseInt(driverSalary);
                 String employeeSalary = employeeSalaryField.getText();
                 int eSalary = Integer.parseInt(employeeSalary);
+                String ticketPrice = ticketPriceField.getText();
+                int tPrice = Integer.parseInt(ticketPrice);
+                String fuelCost = fuelPerKmField.getText();
+                int fuelPerKm = Integer.parseInt(fuelCost);
                 String vechicleType = " ";
 
                 if (selectedVehicleType == "Bus"){
@@ -85,21 +99,20 @@ public class AddVehicle extends JFrame {
 
                     // Convert String to LocalDate
                     LocalDate lDate = LocalDate.parse(selectedDateStr);
-
                     // Convert LocalDate to java.sql.Date
                     java.sql.Date sqlDate = java.sql.Date.valueOf(lDate);
 
-
-                    PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capacity,driversalary,employeesalary, type, company_key,date) VALUES (?,?,?,?,?,?)");
+                    PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capacity,driversalary,employeesalary, type, company_key,date, ticket_price, fuel_per_km) VALUES (?,?,?,?,?,?,?,?)");
                     st.setInt(1,capacity);
                     st.setInt(2,dSalary);
                     st.setInt(3,eSalary);
                     st.setString(4,vechicleType);
                     st.setInt(5,companyKey);
                     st.setDate(6, sqlDate);
+                    st.setInt(7,tPrice);
+                    st.setInt(8,fuelPerKm);
                     st.executeUpdate();
                     st.close();
-
                 }catch (SQLException error){
                     error.printStackTrace();
                 }
@@ -115,10 +128,17 @@ public class AddVehicle extends JFrame {
         add(driverSalaryField);
         add(employeeSalaryLabel);
         add(employeeSalaryField);
+        add(ticketPriceLabel);
+        add(ticketPriceField);
+        add(fuelTypeLabel);
+        add(fuelTypeComboBox);
+        add(fuelLabel);
+        add(fuelPerKmField);
         add(dateLabel);
         add(dateComboBox);
         add(okButton);
 
+        setDefaultCloseOperation(AddVehicle.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }
