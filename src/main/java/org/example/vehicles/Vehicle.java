@@ -1,63 +1,52 @@
 package org.example.vehicles;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public abstract class Vehicle {
 
-    private int ıd;
-    private String oilType;
-    private int capasity;
-    private int driverSalary;
-    private  int employeeSalary;
-    public void calculateFuelCost(){
 
-    }
+    private int capasity, driverSalary, employeeSalary, companyKey, ticketPrice, fuelPerKm;
+    private LocalDate departureDate;
 
-    public Vehicle(int ıd, String oilType, int capasity, int driverSalary, int employeeSalary) {
-        this.ıd = ıd;
-        this.oilType = oilType;
+
+    public Vehicle(int capasity, int driverSalary, int employeeSalary, int companyKey, LocalDate departureDate, int ticketPrice, int fuelPerKm) {
         this.capasity = capasity;
         this.driverSalary = driverSalary;
         this.employeeSalary = employeeSalary;
-    }
+        this.companyKey = companyKey;
+        this.departureDate = departureDate;
+        this.ticketPrice = ticketPrice;
+        this.fuelPerKm = fuelPerKm;
 
-    public int getId() {
-        return ıd;
-    }
-
-    public void setId(int ıd) {
-        this.ıd = ıd;
-    }
-
-    public String getOilType() {
-        return oilType;
-    }
-
-    public void setOilType(String oilType) {
-        this.oilType = oilType;
     }
 
     public int getCapasity() {
         return capasity;
     }
 
-    public void setCapasity(int capasity) {
-        this.capasity = capasity;
-    }
-
     public int getDriverSalary() {
         return driverSalary;
-    }
-
-    public void setDriverSalary(int driverSalary) {
-        this.driverSalary = driverSalary;
     }
 
     public int getEmployeeSalary() {
         return employeeSalary;
     }
 
-    public void setEmployeeSalary(int employeeSalary) {
-        this.employeeSalary = employeeSalary;
+    public int getCompanyKey() {
+        return companyKey;
+    }
+
+    public LocalDate getDepartureDate() {
+        return departureDate;
+    }
+
+    public int getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public int getFuelPerKm() {
+        return fuelPerKm;
     }
 }

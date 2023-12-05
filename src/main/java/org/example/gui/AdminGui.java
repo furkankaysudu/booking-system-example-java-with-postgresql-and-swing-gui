@@ -1,5 +1,8 @@
 package org.example.gui;
 
+import org.example.users.Admin;
+import org.example.users.Company;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -79,7 +82,7 @@ public class AdminGui extends JFrame {
     }
 
     private void setServicePrice() {
-            String newPrice = servicePriceField.getText();
+        String newPrice = servicePriceField.getText();
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
             PreparedStatement st = connection.prepareStatement("INSERT INTO admin(serviceprice) VALUES (?)");
             st.setInt(1,Integer.parseInt(newPrice));
@@ -107,11 +110,12 @@ public class AdminGui extends JFrame {
             String companyName = companyNameField.getText();
             char[] passwordChars = passwordField.getPassword();
             String companyPassword = new String(passwordChars);
+            Company company = new Company(companyName, new StringBuilder(companyPassword));
 
             try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
                 PreparedStatement st = connection.prepareStatement("INSERT INTO companies(name,password) VALUES (?,?)");
-                st.setString(1,companyName);
-                st.setString(2,companyPassword);
+                st.setString(1,company.getUserName());
+                st.setString(2,company.getPassword().toString());
                 st.executeUpdate();
                 st.close();
             }catch (SQLException error){

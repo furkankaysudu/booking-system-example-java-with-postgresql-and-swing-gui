@@ -1,16 +1,36 @@
 package org.example.vehicles;
 
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Bus extends Vehicle{
 
-    @Override
-    public void setOilType(String oilType) {
-        super.setOilType("Benzin");
+    public Bus(int capasity, int driverSalary, int employeeSalary, int companyKey, LocalDate departureDate, int ticketPrice, int fuelPerKm) {
+        super(capasity, driverSalary, employeeSalary, companyKey, departureDate, ticketPrice, fuelPerKm);
     }
 
-    public Bus(int ıd, String oilType, int capasity, int driverSalary, int employeeSalary) {
-        super(ıd, oilType, capasity, driverSalary, employeeSalary);
-    }
+    public void insertVehicle(){
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
 
+            // Convert LocalDate to java.sql.Date
+            java.sql.Date sqlDate = java.sql.Date.valueOf(getDepartureDate());
+
+            PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capacity,driversalary,employeesalary, type, company_key, date, ticket_price, fuel_per_km) VALUES (?,?,?,?,?,?,?,?)");
+            st.setInt(1, getCapasity());
+            st.setInt(2, getDriverSalary());
+            st.setInt(3, getEmployeeSalary());
+            st.setString(4, "Bus");
+            st.setInt(5, getCompanyKey());
+            st.setDate(6, sqlDate);
+            st.setInt(7, getTicketPrice());
+            st.setInt(8, getFuelPerKm());
+            st.executeUpdate();
+            st.close();
+        }catch (SQLException error){
+            error.printStackTrace();
+        }
+    }
 }

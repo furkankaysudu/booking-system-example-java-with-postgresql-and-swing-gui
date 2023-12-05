@@ -1,5 +1,8 @@
 package org.example.gui;
 
+import org.example.users.AuthenticatedUserInfo;
+import org.example.users.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
@@ -44,57 +47,26 @@ public class LoginGui extends JFrame {
         char[] passwordChars = passwordField.getPassword();
         String password = new String(passwordChars);
 
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
-            // Admin authentication
-            PreparedStatement adminStatement = connection.prepareStatement("SELECT * FROM admin WHERE name = ?");
-            adminStatement.setString(1, username);
-            ResultSet adminResultSet = adminStatement.executeQuery();
+        User user = new User(username, new StringBuilder(password)) {
 
-            if (adminResultSet.next()) {
-                String retrievedUsername = adminResultSet.getString("name");
-                String retrievedPassword = adminResultSet.getString("password");
-
-                if (username.equals(retrievedUsername) && password.equals(retrievedPassword)) {
-                    // Admin authentication successful
-                    JOptionPane.showMessageDialog(this, "Admin login successful!");
-                    new AdminGui().setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password.");
-                    System.out.println(retrievedPassword);
-                }
-            } else {
-                // Company authentication
-                PreparedStatement companyStatement = connection.prepareStatement("SELECT * FROM companies WHERE name = ?");
-                companyStatement.setString(1, username);
-                ResultSet companyResultSet = companyStatement.executeQuery();
-
-                if (companyResultSet.next()) {
-                    String retrievedPassword = companyResultSet.getString("password");
-                    int id = companyResultSet.getInt("id");
-
-                    if (password.equals(retrievedPassword)) {
-                        // Company authentication successful
-                        JOptionPane.showMessageDialog(this, "Company login successful!");
-                        new CompanyPage(id).setVisible(true);
-                        dispose();
-                        // Proceed with company-related actions or open another GUI
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Invalid username or password.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password.");
-                }
+        };
+        AuthenticatedUserInfo authenticatedUserInfo = user.authenticatedUser();
+        switch (authenticatedUserInfo.getUserType()){
+            case NONE -> JOptionPane.showMessageDialog(this, "Invalid username or password.");
+            case ADMIN -> {
+                JOptionPane.showMessageDialog(this, "Admin login successful!");
+                new AdminGui().setVisible(true);
+                dispose();
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            case COMPANY -> {
+                JOptionPane.showMessageDialog(this, "Company login successful!");
+                new CompanyPage(authenticatedUserInfo.getId(), username, password).setVisible(true);
+                dispose();
+            }
         }
     }
     private void openBookTicketPage(){
         new searchForm().setVisible(true);
         dispose();
-    }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(LoginGui::new);
     }
 }

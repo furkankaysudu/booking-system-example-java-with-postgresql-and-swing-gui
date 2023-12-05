@@ -79,42 +79,19 @@ public class AddVehicle extends JFrame {
                 String fuelCost = fuelPerKmField.getText();
                 int fuelPerKm = Integer.parseInt(fuelCost);
                 String vechicleType = " ";
+                String selectedDateStr = (String) dateComboBox.getSelectedItem();
+                LocalDate lDate = LocalDate.parse(selectedDateStr);
 
                 if (selectedVehicleType == "Bus"){
-                    //Bus newBus = new Bus(Integer.parseInt(vehicleId), "Benzin", Integer.parseInt(capacity), Integer.parseInt(driverSalary), Integer.parseInt(employeeSalary));
-                    vechicleType = "Bus";
+                    Bus bus = new Bus(capacity, dSalary, eSalary, companyKey, lDate, tPrice, fuelPerKm);
+                    bus.insertVehicle();
                 }else if (selectedVehicleType == "Train") {
-                   // Train newTrain = new Train(Integer.parseInt(vehicleId), "Electric", Integer.parseInt(capacity), Integer.parseInt(driverSalary), Integer.parseInt(employeeSalary));
-                    vechicleType = "Train";
+                    Train train = new Train(capacity, dSalary, eSalary, companyKey, lDate, tPrice, fuelPerKm);
+                    train.insertVehicle();
                 }
                 else if(selectedVehicleType == "Airplane"){
-                    //AirPlane newAirplane = new AirPlane(Integer.parseInt(vehicleId), "Gas", Integer.parseInt(capacity), Integer.parseInt(driverSalary), Integer.parseInt(employeeSalary));
-                    vechicleType = "Airplane";
-                }else {
-                    vechicleType = "bilinmiyor";
-                }
-                // You can also retrieve city names from the cityList
-                try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
-                    String selectedDateStr = (String) dateComboBox.getSelectedItem();
-
-                    // Convert String to LocalDate
-                    LocalDate lDate = LocalDate.parse(selectedDateStr);
-                    // Convert LocalDate to java.sql.Date
-                    java.sql.Date sqlDate = java.sql.Date.valueOf(lDate);
-
-                    PreparedStatement st = connection.prepareStatement("INSERT INTO vehicles(capacity,driversalary,employeesalary, type, company_key,date, ticket_price, fuel_per_km) VALUES (?,?,?,?,?,?,?,?)");
-                    st.setInt(1,capacity);
-                    st.setInt(2,dSalary);
-                    st.setInt(3,eSalary);
-                    st.setString(4,vechicleType);
-                    st.setInt(5,companyKey);
-                    st.setDate(6, sqlDate);
-                    st.setInt(7,tPrice);
-                    st.setInt(8,fuelPerKm);
-                    st.executeUpdate();
-                    st.close();
-                }catch (SQLException error){
-                    error.printStackTrace();
+                    AirPlane airPlane = new AirPlane(capacity, dSalary, eSalary, companyKey, lDate, tPrice, fuelPerKm);
+                    airPlane.insertVehicle();
                 }
             }
         });
