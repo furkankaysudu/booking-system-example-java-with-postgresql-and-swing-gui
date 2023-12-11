@@ -1,5 +1,8 @@
 package org.example.gui;
 
+import org.example.data.Route;
+import org.example.data.Trip;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
@@ -94,7 +97,7 @@ public class AddDestination extends JFrame {
         clearRouteOptions();
 
         if (selectedVehicle != null) {
-            switch (selectedVehicle.substring(2)) {
+            switch (selectedVehicle.substring(3)) {
                 case "Bus":
                     createRouteOptions(busRouteOne, busRouteTwo);
                     break;
@@ -130,18 +133,18 @@ public class AddDestination extends JFrame {
     private void handleRouteSelection() {
         String selectedRoute = getSelectedRoute();
         System.out.println("Selected Route: " + selectedRoute);
-
+        Route route = new Route(selectedRoute);
         // Insert the selected route into the database
-        insertRoute(selectedRoute, getDistance(selectedRoute));
+        insertRoute(selectedRoute, route.getDistance());
     }
 
     private void handleOneWaySelection() {
         boolean isOneWay = oneWayCheckBox.isSelected();
         String selectedRoute = getSelectedRoute();
         System.out.println("Is One Way: " + isOneWay);
-
+        Route route = new Route(selectedRoute);
         // Update the One Way information in the database
-        updateOneWayInfo(isOneWay, getDistance(selectedRoute), selectedRoute);
+        updateOneWayInfo(isOneWay, route.getDistance(), selectedRoute);
     }
 
     private String getSelectedRoute() {
@@ -152,55 +155,24 @@ public class AddDestination extends JFrame {
         }
         return "";
     }
-    private int getDistance(String selectedRoute){
-        switch(selectedRoute){
-            case "Istanbul - Kocaeli - Ankara":
-                return 500;
-            case "Istanbul - Kocaeli - Eskişehir - Konya":
-                return 600;
-            case "Istanbul - Kocaeli - Bilecik - Eskişehir - Ankara":
-                return 375;
-            case "Istanbul - Kocaeli - Bilecik - Eskişehir - Konya":
-                return 450;
-            case "Istanbul - Konya":
-                return 300;
-            case "Istanbul - Ankara":
-                return 250;
-            default:
-                return 1;
-        }
-    }
 
     private void insertRoute(String selectedRoute, int distance) {
         // Insert the selected route into the database
         String selectedVehicle = (String) vehicleComboBox.getSelectedItem();
-        int selectedId = Integer.parseInt(selectedVehicle.substring(0,1));
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO route(route, is_one_way, distance, vehicle_key) VALUES (?, ?, ?, ?)");
-            statement.setString(1, selectedRoute);
-            statement.setBoolean(2, oneWayCheckBox.isSelected());
-            statement.setInt(3,distance);
-            statement.setInt(4,selectedId);
-            statement.executeUpdate();
-        } catch (SQLException error) {
-            error.printStackTrace();
-        }
+        int selectedId = Integer.parseInt(selectedVehicle.substring(0,2));
+        Boolean isoneWay = oneWayCheckBox.isSelected();
+        System.out.println(selectedId);
+        Trip trip = new Trip(selectedRoute, selectedId, distance, isoneWay);
+        trip.insertDestination();
     }
 
     private void updateOneWayInfo(boolean isOneWay, int distance, String selectedRoute) {
         // Update the One Way information in the database
         String selectedVehicle = (String) vehicleComboBox.getSelectedItem();
-        int selectedId = Integer.parseInt(selectedVehicle.substring(0,1));
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
-            PreparedStatement statement = connection.prepareStatement("UPDATE route SET route = ?, is_one_way = ?, distance = ? WHERE vehicle_key = ?");
-            statement.setString(1, selectedRoute);
-            statement.setBoolean(2,isOneWay);
-            statement.setInt(3,distance);
-            statement.setInt(4, selectedId);
-            statement.executeUpdate();
-        } catch (SQLException error) {
-            error.printStackTrace();
-        }
+        int selectedId = Integer.parseInt(selectedVehicle.substring(0,2));
+        System.out.println(selectedId);
+        Trip trip = new Trip(selectedRoute, selectedId, distance, isOneWay);
+        trip.updateDestination();
     }
 
 }

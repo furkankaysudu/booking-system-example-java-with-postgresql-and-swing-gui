@@ -6,6 +6,6 @@ public interface IProfitable {
     int totalBalance(int totalIncome, int totalExpense);
     int calculateIncome(int id, int companyKey);
     int calculateExpense(int id, int companyKey);
-    int calculateTotalIncome();
-    int calculateTotalExpense();
+    int calculateTotalIncome(int companyKey);
+    int calculateTotalExpense(int companyKey);
 }

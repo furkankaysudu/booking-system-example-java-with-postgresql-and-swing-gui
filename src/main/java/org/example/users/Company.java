@@ -59,9 +59,8 @@ public class Company extends User implements IProfitable{
 
     @Override
     public int calculateExpense(int id, int companyKey) {
+
         int expense = 0, i;
-
-
         List<Vehicle> info = getVehicleInfo(companyKey);
 
         String query = "SELECT distance, is_one_way FROM route WHERE vehicle_key = ?";
@@ -94,13 +93,68 @@ public class Company extends User implements IProfitable{
     }
 
     @Override
-    public int calculateTotalIncome() {
-        return 0;
+    public int calculateTotalIncome(int companyKey) {
+        int income = 0, i = 0;
+
+        List<Vehicle> info = getVehicleInfo(companyKey);
+
+
+        String query = "SELECT is_one_way FROM route WHERE vehicle_key = ?";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            for (Company.Vehicle vehicle : info){
+                statement.setInt(1, vehicle.getId());
+            }
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Boolean is_one_way = resultSet.getBoolean("is_one_way");
+
+                Company.Vehicle vehicle = info.get(i);
+                int capacity = vehicle.getCapacity();
+                int ticketPrice = vehicle.getTicket_price();
+                income += (!is_one_way) ? ((capacity * ticketPrice) * 2) : (capacity * ticketPrice);
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return income;
     }
 
     @Override
-    public int calculateTotalExpense() {
-        return 0;
+    public int calculateTotalExpense(int companyKey) {
+
+        int expense = 0, i = 0;
+        List<Vehicle> info = getVehicleInfo(companyKey);
+
+        String query = "SELECT distance, is_one_way FROM route WHERE vehicle_key = ?";
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            //TODO SEND ALL ID
+            for (Company.Vehicle vehicle : info){
+                statement.setInt(1, vehicle.getId());
+            }
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int distance = resultSet.getInt("distance");
+                Boolean is_one_way = resultSet.getBoolean("is_one_way");
+
+                Company.Vehicle vehicle = info.get(i);
+                int driverSalary = vehicle.getDriversalary();
+                int employeeSalary = vehicle.getEmployeesalary();
+                int fuelPerKm = vehicle.getFuelPerKm();
+
+                expense += driverSalary + employeeSalary;
+                expense += (!is_one_way) ? ((distance * fuelPerKm) * 2) : (distance * fuelPerKm);
+                i++;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return expense;
     }
     public class Vehicle {
         private int id;

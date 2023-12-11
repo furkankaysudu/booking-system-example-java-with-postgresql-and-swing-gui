@@ -16,6 +16,9 @@ public class AdminGui extends JFrame {
     private JButton setServicePriceButton;
     private JButton addCompanyButton;
     private JButton deleteCompanyButton;
+    private StringBuilder password = new StringBuilder("1234");
+    private String userName = "admin";
+
     public AdminGui() {
         setTitle("Admin Panel");
         setSize(500, 300);
@@ -68,29 +71,19 @@ public class AdminGui extends JFrame {
     }
 
     private void fetchCompanyNames() {
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT name FROM companies");
-
-            while (resultSet.next()) {
-                String companyName = resultSet.getString("name");
-                companyListModel.addElement(companyName);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        Admin admin = new Admin(userName, password);
+        for (int i = 0; i<admin.fetchCompanyNames().size();i++){
+            companyListModel.addElement(admin.fetchCompanyNames().get(i));
         }
+
     }
 
     private void setServicePrice() {
         String newPrice = servicePriceField.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
-            PreparedStatement st = connection.prepareStatement("INSERT INTO admin(serviceprice) VALUES (?)");
-            st.setInt(1,Integer.parseInt(newPrice));
-            st.executeUpdate();
-            st.close();
-        }catch (SQLException error){
-            error.printStackTrace();
-        }
+        int servicePrice = Integer.parseInt(newPrice);
+        Admin admin = new Admin(userName,password);
+        admin.setServicePrice(servicePrice);
+
     }
 
     private void addCompany() {
@@ -110,22 +103,12 @@ public class AdminGui extends JFrame {
             String companyName = companyNameField.getText();
             char[] passwordChars = passwordField.getPassword();
             String companyPassword = new String(passwordChars);
+
             Company company = new Company(companyName, new StringBuilder(companyPassword));
 
-            try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
-                PreparedStatement st = connection.prepareStatement("INSERT INTO companies(name,password) VALUES (?,?)");
-                st.setString(1,company.getUserName());
-                st.setString(2,company.getPassword().toString());
-                st.executeUpdate();
-                st.close();
-            }catch (SQLException error){
-                error.printStackTrace();
-            }
+            Admin admin = new Admin(userName, password);
+            admin.addCompany(company.getUserName(), company.getPassword().toString());
 
-            // Logic to add a new company to the database using companyName and companyPassword
-            // Your database insertion logic here...
-
-            // Update GUI with the new company (e.g., add to the companyListModel)
             companyListModel.addElement(companyName);
             JOptionPane.showMessageDialog(this, "New company added: " + companyName);
         }
@@ -137,20 +120,11 @@ public class AdminGui extends JFrame {
         if (selectedCompany != null) {
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + selectedCompany + "?");
             if (confirm == JOptionPane.YES_OPTION) {
-                // Logic to delete the selected company from the database
-                // Your database deletion logic here...
+
                 companyListModel.removeElement(selectedCompany);
-                try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")){
-                    String sql = "DELETE FROM companies WHERE name = ?";
-                    PreparedStatement statement = connection.prepareStatement(sql);
-                    statement.setString(1,selectedCompany);
-                    statement.executeUpdate();
-                    statement.close();
 
-                }catch (SQLException error) {
-                    error.printStackTrace();
-                }
-
+                Admin admin = new Admin(userName, password);
+                admin.deleteCompany(selectedCompany);
                 JOptionPane.showMessageDialog(this, selectedCompany + " deleted.");
             }
         } else {

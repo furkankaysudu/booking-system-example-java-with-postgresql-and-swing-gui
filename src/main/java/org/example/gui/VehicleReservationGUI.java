@@ -147,7 +147,7 @@ public class VehicleReservationGUI extends JFrame {
                 IReservable reservable = new Transport(capacity);
                 if (reservable.isReservable(passengerCount)) {
                     reservable.reserveSeat(passengerCount);
-                    String query = "UPDATE vehicles SET capacity = ? WHERE id = ?";
+                    String query = "UPDATE vehicles SET reserved_seat_count = ? WHERE id = ?";
                     try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/ReservationSystem", "postgres", "1234")) {
                         PreparedStatement statement = connection.prepareStatement(query);
                             statement.setInt(1, reservable.resevableSeatCount());

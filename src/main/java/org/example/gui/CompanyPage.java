@@ -145,9 +145,9 @@ public class CompanyPage extends JFrame {
             @Override
             public void run() {
                 JPopupMenu calculationPopUp = new JPopupMenu();
-                calculationPopUp.setPopupSize(200, 50);
+                calculationPopUp.setPopupSize(400, 50);
                 calculationPopUp.setVisible(true);
-                calculationPopUp.setLayout(new GridLayout(2,0));
+                calculationPopUp.setLayout(new GridLayout(2,3));
 
                 selectDateBox = new JComboBox<>(dates);
                 calculationPopUp.add(selectDateBox);
@@ -155,6 +155,10 @@ public class CompanyPage extends JFrame {
                 JButton okButton = new JButton("OK");
                 okButton.setSize(10,10);
                 calculationPopUp.add(okButton);
+
+                JButton totalButton = new JButton("total");
+                okButton.setSize(10,10);
+                calculationPopUp.add(totalButton);
 
                 incomeField = new JTextPane();
                 expenseField = new JTextPane();
@@ -173,6 +177,18 @@ public class CompanyPage extends JFrame {
                     String selectedDate = selectDateBox.getSelectedItem().toString();
                     findId(selectedDate); // Pass the selected date to findId method
                     setFields();
+                });
+
+                totalButton.addActionListener(e -> {
+
+                    Company company = new Company(userName, new StringBuilder(password));
+                    income = company.calculateTotalIncome(companyId);
+                    expense = company.calculateTotalExpense(companyId);
+                    balance = company.totalBalance(income, expense);
+
+                    incomeField.setText(String.valueOf(income));
+                    expenseField.setText(String.valueOf(expense));
+                    balanceField.setText(String.valueOf(balance));
                 });
                 // Display the popup
             }
